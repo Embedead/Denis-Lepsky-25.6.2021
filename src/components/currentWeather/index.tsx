@@ -26,11 +26,17 @@ const defaultWeather = {
 
 const CurrentWeatherContainer = styled.div`
   display: flex;
+  flex-direction: column;
   background-color: ${theme.colors.white};
+  width: 10%;
   border-radius: 1rem;
   margin: 0 1rem;
   padding: 1rem;
   box-shadow: 0px 2px 4px 4px rgba(0, 0, 0, 0.05);
+  label {
+    font-weight: 500;
+    font-size: 2rem;
+  }
 `;
 
 export const CurrentWeather = ({ locationKey }: IProps) => {
@@ -60,10 +66,13 @@ export const CurrentWeather = ({ locationKey }: IProps) => {
 
   return (
     <CurrentWeatherContainer>
+      <label>{currentWeather.weatherText}</label>
+      {units === "Imperial" ? (
+        <label>{currentWeather.Temperature.Imperial}°</label>
+      ) : (
+        <label>{currentWeather.Temperature.Metric}°</label>
+      )}
       <LocationTitle locationKey={locationKey} />
-      {currentWeather.weatherText}
-      {currentWeather.Temperature.Imperial}
-      {currentWeather.Temperature.Metric}
     </CurrentWeatherContainer>
   );
 };

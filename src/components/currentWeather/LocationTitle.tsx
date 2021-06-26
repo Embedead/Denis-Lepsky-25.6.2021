@@ -1,9 +1,17 @@
 import React from "react";
 import axios from "axios";
+import styled from "styled-components";
 
 interface IProps {
   locationKey: string;
 }
+
+const LocationContainer = styled.div`
+  align-self: flex-end;
+  label {
+    font-size: 1.5rem;
+  }
+`;
 
 export const LocationTitle = ({ locationKey }: IProps) => {
   const [location, setLocation] = React.useState("");
@@ -19,5 +27,9 @@ export const LocationTitle = ({ locationKey }: IProps) => {
         setLocation(res.data.LocalizedName);
       });
   }, [locationKey]);
-  return <div>{location}</div>;
+  return (
+    <LocationContainer>
+      <label>{location}</label>
+    </LocationContainer>
+  );
 };

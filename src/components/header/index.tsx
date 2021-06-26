@@ -3,6 +3,7 @@ import styled, { ThemeContext } from "styled-components";
 import WeatherLogo from "../../images/WeatherLogo.png";
 import { useHistory } from "react-router-dom";
 import { theme } from "../../theme";
+import { MdHome, MdFavorite } from "react-icons/md";
 const HeaderContainer = styled.div`
   margin: 0.5rem 1rem;
   padding: 0 0.5rem;
@@ -71,8 +72,12 @@ export const WeatherHeader = () => {
         <label>WeatherApp</label>
       </LogoSpan>
       <LinksSpan>
-        <label onClick={() => handleHistoryPush("/")}>Homepage</label>
-        <label onClick={() => handleHistoryPush("/favorites")}>Favorites</label>
+        <label onClick={() => handleHistoryPush("/")}>
+          <MdHome />
+        </label>
+        <label onClick={() => handleHistoryPush("/favorites")}>
+          <MdFavorite />
+        </label>
       </LinksSpan>
     </HeaderContainer>
   );
