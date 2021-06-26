@@ -1,12 +1,12 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { ThemeContext } from "styled-components";
 import WeatherLogo from "../../images/WeatherLogo.png";
 import { useHistory } from "react-router-dom";
-
+import { theme } from "../../theme";
 const HeaderContainer = styled.div`
   margin: 0.5rem 1rem;
   padding: 0 0.5rem;
-  background-color: ${(props) => props.color};
+  background-color: ${theme.colors.white};
   border-radius: 2rem;
   display: flex;
   justify-content: space-between;
@@ -18,6 +18,7 @@ const HeaderContainer = styled.div`
 const LogoSpan = styled.div`
   display: flex;
   margin: 0.25rem;
+  color: ${theme.colors.black};
 
   img {
     width: 2.25rem;
@@ -64,14 +65,14 @@ export const WeatherHeader = () => {
   };
 
   return (
-    <HeaderContainer color="white">
+    <HeaderContainer>
       <LogoSpan onClick={handleLogoClick}>
         <img src={WeatherLogo} alt="weather-logo" />
         <label>WeatherApp</label>
       </LogoSpan>
       <LinksSpan>
         <label onClick={() => handleHistoryPush("/")}>Homepage</label>
-        <label onClick={() => handleHistoryPush("/Favorites")}>Favorites</label>
+        <label onClick={() => handleHistoryPush("/favorites")}>Favorites</label>
       </LinksSpan>
     </HeaderContainer>
   );
