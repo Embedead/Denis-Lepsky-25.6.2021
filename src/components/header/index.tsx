@@ -1,10 +1,24 @@
 import React from "react";
-import styled, { ThemeContext } from "styled-components";
+import styled, { keyframes } from "styled-components";
 import WeatherLogo from "../../images/WeatherLogo.png";
 import { useHistory } from "react-router-dom";
 import { theme } from "../../theme";
 import { MdHome, MdFavorite } from "react-icons/md";
+
+const expand = keyframes`
+  from{
+    transform:scaleX(0);
+    opacity:0;
+  }
+  to{
+    transform: scaleX(1);
+    opacity:1;
+  }
+`;
+
 const HeaderContainer = styled.div`
+  animation: ${expand} 0.4s linear;
+
   margin: 0.5rem 1rem;
   padding: 0 0.5rem;
   background-color: ${theme.colors.white};

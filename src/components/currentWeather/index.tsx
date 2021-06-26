@@ -1,9 +1,10 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { theme } from "../../theme";
 import axios from "axios";
 import { LocationTitle } from "./LocationTitle";
-
+import { useWeather } from "../../hooks/useWeather";
+import { Loader } from "../misc/Loader";
 interface IProps {
   locationKey: string;
 }
@@ -24,7 +25,20 @@ const defaultWeather = {
   },
 };
 
+const flowUP = keyframes`
+    from{
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to{
+        opacity: 1;
+        transform: translateY(0px);
+    }
+`;
+
 const CurrentWeatherContainer = styled.div`
+  animation: ${flowUP} 0.5s linear;
   display: flex;
   flex-direction: column;
   background-color: ${theme.colors.white};
@@ -40,12 +54,17 @@ const CurrentWeatherContainer = styled.div`
 `;
 
 export const CurrentWeather = ({ locationKey }: IProps) => {
+  const [isLoading, setIsLoading] = React.useState(false);
   const [currentWeather, setCurrentWeather] =
     React.useState<IWeather>(defaultWeather);
   //   const [currentLocationName, setCurrentLocationName] = React.useState("");
   const [units, setUnits] = React.useState("metric");
+  const { useCurrentWeather } = useWeather();
+
+  useCurrentWeather(locationKey);
 
   React.useMemo(() => {
+    setIsLoading(true);
     axios
       .get(
         "https://dataservice.accuweather.com/currentconditions/v1/" +
@@ -61,18 +80,25 @@ export const CurrentWeather = ({ locationKey }: IProps) => {
           },
         };
         setCurrentWeather(weather);
+        setIsLoading(false);
       });
   }, [locationKey]);
 
   return (
     <CurrentWeatherContainer>
-      <label>{currentWeather.weatherText}</label>
-      {units === "Imperial" ? (
-        <label>{currentWeather.Temperature.Imperial}°</label>
+      {isLoading ? (
+        <Loader />
       ) : (
-        <label>{currentWeather.Temperature.Metric}°</label>
+        <>
+          <label>{currentWeather.weatherText}</label>
+          {units === "Imperial" ? (
+            <label>{currentWeather.Temperature.Imperial}°</label>
+          ) : (
+            <label>{currentWeather.Temperature.Metric}°</label>
+          )}
+          <LocationTitle locationKey={locationKey} />
+        </>
       )}
-      <LocationTitle locationKey={locationKey} />
     </CurrentWeatherContainer>
   );
 };

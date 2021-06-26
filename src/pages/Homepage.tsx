@@ -2,6 +2,7 @@ import React from "react";
 // import axios from "axios"
 import styled from "styled-components";
 import { CurrentWeather } from "../components/currentWeather";
+import { DaysAheadForCast } from "../components/DaysAheadForcast";
 // import {getSearchResults}  from "../api/constants"
 
 const HomepageContainer = styled.div`
@@ -14,6 +15,7 @@ export const Homepage = () => {
   return (
     <HomepageContainer>
       <CurrentWeather locationKey={locationKey} />
+      <DaysAheadForCast />
     </HomepageContainer>
   );
 };
