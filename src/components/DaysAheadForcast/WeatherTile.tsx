@@ -26,15 +26,13 @@ const Tile = styled.div<IDarkTheme>`
     flex-wrap: wrap;
   }
   background-color: ${(props) =>
-    props.darkTheme ? theme.colors.black : theme.colors.white};
+    props.darkTheme ? "#121212" : theme.colors.white};
   transition: all 0.5s linear;
   border-radius: 1rem;
   margin: 0.5rem 1rem;
   padding: 1rem;
   box-shadow: ${(props) =>
-    props.darkTheme
-      ? "0px 2px 4px 4px rgba(255, 255, 255, 0.15)"
-      : "0px 2px 4px 4px rgba(0, 0, 0, 0.05)"};
+    props.darkTheme ? "null" : "0px 2px 4px 4px rgba(0, 0, 0, 0.05)"};
   label {
     color: ${(props) =>
       props.darkTheme ? theme.colors.white : theme.colors.black};

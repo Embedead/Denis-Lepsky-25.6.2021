@@ -38,6 +38,7 @@ const CurrentWeatherContainer = styled.div<ICurrentWeatherContainer>`
   background-color: ${(props) =>
     props.darkTheme ? theme.colors.black : theme.colors.white};
   @media only screen and (max-width: 600px) {
+    margin-top: 0.5rem;
     flex-grow: 1;
   }
   border-radius: 1rem;

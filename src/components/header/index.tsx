@@ -32,7 +32,19 @@ const HeaderContainer = styled.div<IDarkTheme>`
   align-items: center;
   box-shadow: 0px 4px 4px 4px rgba(0, 0, 0, 0.05);
   transition: all 0.5s linear;
-  /* height: 2rem; */
+  @media only screen and (max-width: 600px) {
+    margin: 0;
+    position: fixed;
+    bottom: 0.75rem;
+    z-index: 20;
+    left: 0.5rem;
+    right: 0.5rem;
+    max-width: 100%;
+    box-shadow: ${(props) =>
+      props.darkTheme
+        ? "0px 1px 8px 4px rgba(255, 255, 255, 0.25)"
+        : "0px 2px 8px 4px rgba(0, 0, 0, 0.45)"};
+  }
 `;
 
 const LogoSpan = styled.div<IDarkTheme>`

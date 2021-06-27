@@ -16,6 +16,9 @@ const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+  @media only screen and (max-width: 600px) {
+    padding-bottom: 4rem;
+  }
 `;
 
 function App() {
