@@ -5,6 +5,7 @@ import { Homepage } from "./pages/Homepage";
 import { FavoritesPage } from "./pages/Favorites";
 import styled from "styled-components";
 import { WeatherHeader } from "./components/header";
+// import {} from "styled-components/cssprop";
 
 const AppContainer = styled.div`
   position: absolute;

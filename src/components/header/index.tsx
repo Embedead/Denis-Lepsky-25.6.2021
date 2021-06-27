@@ -4,6 +4,7 @@ import WeatherLogo from "../../images/WeatherLogo.png";
 import { useHistory } from "react-router-dom";
 import { theme } from "../../theme";
 import { MdHome, MdFavorite } from "react-icons/md";
+import { useStore } from "../../stores/userStore";
 
 const expand = keyframes`
   from{
@@ -16,24 +17,32 @@ const expand = keyframes`
   }
 `;
 
-const HeaderContainer = styled.div`
-  animation: ${expand} 0.4s linear;
+interface IDarkTheme {
+  darkTheme: boolean;
+}
 
+const HeaderContainer = styled.div<IDarkTheme>`
+  animation: ${expand} 0.4s linear;
   margin: 0.5rem 1rem;
   padding: 0 0.5rem;
-  background-color: ${theme.colors.white};
+  background-color: ${(props) =>
+    props.darkTheme ? theme.colors.black : theme.colors.white};
+  color: ${(props) =>
+    props.darkTheme ? theme.colors.white : theme.colors.black};
   border-radius: 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-shadow: 0px 4px 4px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.5s linear;
   /* height: 2rem; */
 `;
 
-const LogoSpan = styled.div`
+const LogoSpan = styled.div<IDarkTheme>`
   display: flex;
   margin: 0.25rem;
-  color: ${theme.colors.black};
+  color: ${(props) =>
+    props.darkTheme ? theme.colors.white : theme.colors.black};
 
   img {
     width: 2.25rem;
@@ -45,7 +54,7 @@ const LogoSpan = styled.div`
     font-weight: 500;
     padding: 0 0.25rem;
     &:hover {
-      background-color: rgba(0, 0, 0, 0.15);
+      color: ${theme.colors.main};
       border-radius: 0.25rem;
       cursor: pointer;
     }
@@ -54,7 +63,7 @@ const LogoSpan = styled.div`
 
 const LinksSpan = styled.span`
   display: flex;
-
+  align-items: center;
   label {
     cursor: pointer;
     font-weight: 400;
@@ -62,13 +71,14 @@ const LinksSpan = styled.span`
     margin: 0 0.25rem;
     padding: 0 0.25rem;
     &:hover {
-      background-color: rgba(0, 0, 0, 0.15);
+      color: ${theme.colors.main};
       border-radius: 0.25rem;
     }
   }
 `;
 
 export const WeatherHeader = () => {
+  const { metric, setMetric, darkTheme, setDarkTheme } = useStore();
   const history = useHistory();
   const handleLogoClick = () => {
     console.log("clicked");
@@ -79,13 +89,19 @@ export const WeatherHeader = () => {
     history.push(urlSuffix);
   };
 
+  console.log("dark theme", darkTheme);
+
   return (
-    <HeaderContainer>
-      <LogoSpan onClick={handleLogoClick}>
+    <HeaderContainer darkTheme={darkTheme}>
+      <LogoSpan darkTheme={darkTheme} onClick={handleLogoClick}>
         <img src={WeatherLogo} alt="weather-logo" />
         <label>WeatherApp</label>
       </LogoSpan>
       <LinksSpan>
+        <label onClick={() => setDarkTheme(!darkTheme)}>
+          {darkTheme ? "dark theme" : "light theme"}
+        </label>
+        <label onClick={() => setMetric(!metric)}>{metric ? "C" : "F"}</label>
         <label onClick={() => handleHistoryPush("/")}>
           <MdHome />
         </label>

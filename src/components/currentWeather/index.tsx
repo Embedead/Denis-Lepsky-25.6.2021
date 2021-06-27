@@ -1,12 +1,13 @@
 import React from "react";
-import styled, { keyframes } from "styled-components";
-import { theme } from "../../theme";
+import styled from "styled-components";
+import { theme, flowUP } from "../../theme";
 import axios from "axios";
 import { LocationTitle } from "./LocationTitle";
-import { useWeather } from "../../hooks/useWeather";
 import { Loader } from "../misc/Loader";
+import { useStore } from "../../stores/userStore";
 interface IProps {
   locationKey: string;
+  metric: boolean;
 }
 
 interface IWeather {
@@ -25,43 +26,36 @@ const defaultWeather = {
   },
 };
 
-const flowUP = keyframes`
-    from{
-        opacity: 0;
-        transform: translateY(20px);
-    }
+interface ICurrentWeatherContainer {
+  darkTheme: boolean;
+}
 
-    to{
-        opacity: 1;
-        transform: translateY(0px);
-    }
-`;
-
-const CurrentWeatherContainer = styled.div`
+const CurrentWeatherContainer = styled.div<ICurrentWeatherContainer>`
   animation: ${flowUP} 0.5s linear;
   display: flex;
   flex-direction: column;
-  background-color: ${theme.colors.white};
+  background-color: ${(props) =>
+    props.darkTheme ? theme.colors.black : theme.colors.white};
   width: 10%;
   border-radius: 1rem;
   margin: 0 1rem;
   padding: 1rem;
   box-shadow: 0px 2px 4px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.5s linear;
   label {
     font-weight: 500;
     font-size: 2rem;
+    color: ${(props) =>
+      props.darkTheme ? theme.colors.white : theme.colors.black};
   }
 `;
 
-export const CurrentWeather = ({ locationKey }: IProps) => {
+export const CurrentWeather = ({ locationKey, metric }: IProps) => {
+  const { darkTheme } = useStore();
+  console.log("location key is", locationKey);
   const [isLoading, setIsLoading] = React.useState(false);
   const [currentWeather, setCurrentWeather] =
     React.useState<IWeather>(defaultWeather);
-  //   const [currentLocationName, setCurrentLocationName] = React.useState("");
-  const [units, setUnits] = React.useState("metric");
-  const { useCurrentWeather } = useWeather();
-
-  useCurrentWeather(locationKey);
 
   React.useMemo(() => {
     setIsLoading(true);
@@ -80,18 +74,23 @@ export const CurrentWeather = ({ locationKey }: IProps) => {
           },
         };
         setCurrentWeather(weather);
-        setIsLoading(false);
+      })
+      .catch((err) => {
+        if (err.toString().includes("Network Error"))
+          console.log("error is", err);
+        setCurrentWeather(defaultWeather);
       });
+    setIsLoading(false);
   }, [locationKey]);
 
   return (
-    <CurrentWeatherContainer>
+    <CurrentWeatherContainer darkTheme={darkTheme}>
       {isLoading ? (
         <Loader />
       ) : (
         <>
           <label>{currentWeather.weatherText}</label>
-          {units === "Imperial" ? (
+          {!metric ? (
             <label>{currentWeather.Temperature.Imperial}°</label>
           ) : (
             <label>{currentWeather.Temperature.Metric}°</label>

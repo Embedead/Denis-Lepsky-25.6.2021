@@ -25,6 +25,10 @@ export const LocationTitle = ({ locationKey }: IProps) => {
       )
       .then((res) => {
         setLocation(res.data.LocalizedName);
+      })
+      .catch((err) => {
+        console.log("location title error is", err);
+        setLocation("N/A");
       });
   }, [locationKey]);
   return (

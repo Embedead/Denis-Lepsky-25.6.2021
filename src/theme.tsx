@@ -1,6 +1,5 @@
 import React from "react";
-
-import { DefaultTheme } from "styled-components";
+import { DefaultTheme, keyframes } from "styled-components";
 export const theme: DefaultTheme = {
   colors: {
     white: "white",
@@ -9,3 +8,15 @@ export const theme: DefaultTheme = {
     secondary: "#F2A260",
   },
 };
+
+export const flowUP = keyframes`
+from{
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+to{
+    opacity: 1;
+    transform: translateY(0px);
+}
+`;
