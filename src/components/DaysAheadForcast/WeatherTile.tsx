@@ -18,8 +18,8 @@ const Tile = styled.div<IDarkTheme>`
   animation: ${flowUP} 0.5s linear;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  flex-grow: 10;
+  flex-grow: 1;
+  flex-wrap: nowrap;
   @media only screen and (max-width: 600px) {
     flex-direction: row;
     margin: 0.5rem 0;

@@ -11,11 +11,12 @@ const DaysAheadContainer = styled.div<IDarkTheme>`
   opacity: 0;
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center; */
+  /* align-items: center; */
   flex-wrap: wrap;
   @media only screen and (max-width: 600px) {
     flex-direction: column;
+    padding: 0.5rem 1rem;
   }
   background-color: ${(props) =>
     props.darkTheme ? theme.colors.black : theme.colors.white};
