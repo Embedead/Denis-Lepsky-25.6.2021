@@ -33,13 +33,13 @@ const HeaderContainer = styled.div<IDarkTheme>`
   box-shadow: 0px 4px 4px 4px rgba(0, 0, 0, 0.05);
   transition: all 0.5s linear;
   @media only screen and (max-width: 600px) {
-    margin: 0;
+    /* margin: 0;
     position: fixed;
     bottom: 0.75rem;
     z-index: 20;
     left: 0.5rem;
     right: 0.5rem;
-    max-width: 100%;
+    max-width: 100%; */
     box-shadow: ${(props) =>
       props.darkTheme
         ? "0px 1px 8px 4px rgba(255, 255, 255, 0.25)"
