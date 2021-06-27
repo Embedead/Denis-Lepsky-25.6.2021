@@ -34,9 +34,12 @@ const CurrentWeatherContainer = styled.div<ICurrentWeatherContainer>`
   animation: ${flowUP} 0.5s linear;
   display: flex;
   flex-direction: column;
+  flex-grow: 0.5;
   background-color: ${(props) =>
     props.darkTheme ? theme.colors.black : theme.colors.white};
-  width: 10%;
+  @media only screen and (max-width: 600px) {
+    flex-grow: 1;
+  }
   border-radius: 1rem;
   margin: 0 1rem;
   padding: 1rem;

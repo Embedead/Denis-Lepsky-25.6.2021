@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { theme, flowUP } from "../../theme";
+import { IDarkTheme } from "../misc/interfaces";
 
 interface IProps {
   darkTheme: boolean;
@@ -13,21 +14,22 @@ interface IProps {
   };
 }
 
-interface IDarkTheme {
-  darkTheme: boolean;
-}
-
 const Tile = styled.div<IDarkTheme>`
   animation: ${flowUP} 0.5s linear;
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex-grow: 10;
+  @media only screen and (max-width: 600px) {
+    flex-direction: row;
+    margin: 0.5rem 0;
+    flex-wrap: wrap;
+  }
   background-color: ${(props) =>
     props.darkTheme ? theme.colors.black : theme.colors.white};
   transition: all 0.5s linear;
-  /* width: 10%; */
   border-radius: 1rem;
-  margin: 0 1rem;
+  margin: 0.5rem 1rem;
   padding: 1rem;
   box-shadow: ${(props) =>
     props.darkTheme
@@ -41,13 +43,25 @@ const Tile = styled.div<IDarkTheme>`
   }
 `;
 
+const TileRow = styled.span`
+  display: flex;
+  width: 100%;
+`;
+
 export const WeatherTile = ({ weatherDetails, darkTheme }: IProps) => {
   return (
     <Tile darkTheme={darkTheme}>
-      <label>Day</label>
-      <label>{weatherDetails.weatherText}</label>
-      <label>{weatherDetails.Temperature.max}</label>
-      <label>{weatherDetails.Temperature.min}</label>
+      <TileRow>
+        <label>Day</label>
+      </TileRow>
+      <TileRow>
+        <label>{weatherDetails.weatherText}</label>
+      </TileRow>
+      <TileRow>
+        <label>
+          {weatherDetails.Temperature.max}° / {weatherDetails.Temperature.min}°
+        </label>
+      </TileRow>
     </Tile>
   );
 };

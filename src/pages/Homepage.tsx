@@ -15,6 +15,10 @@ const HomepageContainer = styled.div`
   flex-direction: column;
 `;
 
+const HomepageRow = styled.span`
+  display: flex;
+`;
+
 export const Homepage = ({ specificLocationKey }: IProps) => {
   const { locationID, setLocationID, metric } = useStore();
   const [isLoading, setIsLoading] = React.useState(true);
@@ -58,10 +62,12 @@ export const Homepage = ({ specificLocationKey }: IProps) => {
         <Loader />
       ) : (
         <HomepageContainer>
-          <CurrentWeather
-            locationKey={specificLocationKey || locationID}
-            metric={metric}
-          />
+          <HomepageRow>
+            <CurrentWeather
+              locationKey={specificLocationKey || locationID}
+              metric={metric}
+            />
+          </HomepageRow>
           <DaysAheadForCast
             locationKey={specificLocationKey || locationID}
             metric={metric}

@@ -4,22 +4,24 @@ import { theme, flowUP } from "../../theme";
 import { WeatherTile } from "./WeatherTile";
 import axios from "axios";
 import { useStore } from "../../stores/userStore";
-
-interface IDarkTheme {
-  darkTheme: boolean;
-}
+import { IDarkTheme } from "../misc/interfaces";
 
 const DaysAheadContainer = styled.div<IDarkTheme>`
   animation: ${flowUP} 0.5s linear 250ms forwards;
   opacity: 0;
   display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  @media only screen and (max-width: 600px) {
+    flex-direction: column;
+  }
   background-color: ${(props) =>
     props.darkTheme ? theme.colors.black : theme.colors.white};
-  /* width: 10%; */
-  /* height: 5rem; */
   border-radius: 1rem;
   margin: 0.5rem 1rem;
-  padding: 1rem;
+  /* padding: 1rem; */
   box-shadow: 0px 2px 4px 4px rgba(0, 0, 0, 0.05);
   transition: all 0.5s linear;
   label {

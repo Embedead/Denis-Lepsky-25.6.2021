@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import { theme } from "../../theme";
 import { MdHome, MdFavorite } from "react-icons/md";
 import { useStore } from "../../stores/userStore";
+import { IDarkTheme } from "../misc/interfaces";
 
 const expand = keyframes`
   from{
@@ -16,10 +17,6 @@ const expand = keyframes`
     opacity:1;
   }
 `;
-
-interface IDarkTheme {
-  darkTheme: boolean;
-}
 
 const HeaderContainer = styled.div<IDarkTheme>`
   animation: ${expand} 0.4s linear;
@@ -51,6 +48,9 @@ const LogoSpan = styled.div<IDarkTheme>`
   label {
     margin: auto 0.5rem;
     font-size: 1.5rem;
+    @media only screen and (max-width: 600px) {
+      font-size: 0;
+    }
     font-weight: 500;
     padding: 0 0.25rem;
     &:hover {
@@ -89,8 +89,6 @@ export const WeatherHeader = () => {
     history.push(urlSuffix);
   };
 
-  console.log("dark theme", darkTheme);
-
   return (
     <HeaderContainer darkTheme={darkTheme}>
       <LogoSpan darkTheme={darkTheme} onClick={handleLogoClick}>
@@ -99,7 +97,7 @@ export const WeatherHeader = () => {
       </LogoSpan>
       <LinksSpan>
         <label onClick={() => setDarkTheme(!darkTheme)}>
-          {darkTheme ? "dark theme" : "light theme"}
+          {darkTheme ? "dark" : "light"}
         </label>
         <label onClick={() => setMetric(!metric)}>{metric ? "C" : "F"}</label>
         <label onClick={() => handleHistoryPush("/")}>

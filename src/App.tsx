@@ -12,9 +12,10 @@ const AppContainer = styled.div`
   background-color: #f2c760;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  overflow: auto;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 `;
 
 function App() {
