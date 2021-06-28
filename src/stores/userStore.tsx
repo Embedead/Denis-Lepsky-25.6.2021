@@ -2,7 +2,7 @@ import create from "zustand";
 
 interface IUserStore {
   locationID: string;
-  favorites: [];
+  favorites: string[];
   metric: boolean;
   darkTheme: boolean;
   setLocationID: (newLocationID: string) => void;

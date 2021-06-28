@@ -5,7 +5,7 @@ import { Homepage } from "./pages/Homepage";
 import { FavoritesPage } from "./pages/Favorites";
 import styled from "styled-components";
 import { WeatherHeader } from "./components/header";
-// import {} from "styled-components/cssprop";
+import { Search } from "./components/Search";
 
 const AppContainer = styled.div`
   position: absolute;
@@ -27,6 +27,7 @@ function App() {
 
         <Switch>
           <Route exact path="/">
+            {/* <Search /> */}
             <Homepage />
           </Route>
           <Route exact path="/favorites">

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { theme, flowUP } from "../../theme";
 import axios from "axios";
 import { LocationTitle } from "./LocationTitle";
+import { Favorite } from "./Favorite";
 import { Loader } from "../misc/Loader";
 import { useStore } from "../../stores/userStore";
 interface IProps {
@@ -55,7 +56,6 @@ const CurrentWeatherContainer = styled.div<ICurrentWeatherContainer>`
 
 export const CurrentWeather = ({ locationKey, metric }: IProps) => {
   const { darkTheme } = useStore();
-  console.log("location key is", locationKey);
   const [isLoading, setIsLoading] = React.useState(false);
   const [currentWeather, setCurrentWeather] =
     React.useState<IWeather>(defaultWeather);
@@ -80,7 +80,7 @@ export const CurrentWeather = ({ locationKey, metric }: IProps) => {
       })
       .catch((err) => {
         if (err.toString().includes("Network Error"))
-          console.log("error is", err);
+          console.log("weather by key", err);
         setCurrentWeather(defaultWeather);
       });
     setIsLoading(false);
@@ -98,6 +98,7 @@ export const CurrentWeather = ({ locationKey, metric }: IProps) => {
           ) : (
             <label>{currentWeather.Temperature.Metric}°</label>
           )}
+          <Favorite locationKey={locationKey} />
           <LocationTitle locationKey={locationKey} />
         </>
       )}

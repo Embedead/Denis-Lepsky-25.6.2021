@@ -5,11 +5,12 @@ import { IDarkTheme } from "../misc/interfaces";
 
 interface IProps {
   darkTheme: boolean;
+  date: string;
   weatherDetails: {
     weatherText: string;
     Temperature: {
-      max: string;
-      min: string;
+      max: string | number;
+      min: string | number;
     };
   };
 }
@@ -46,11 +47,11 @@ const TileRow = styled.span`
   width: 100%;
 `;
 
-export const WeatherTile = ({ weatherDetails, darkTheme }: IProps) => {
+export const WeatherTile = ({ weatherDetails, darkTheme, date }: IProps) => {
   return (
     <Tile darkTheme={darkTheme}>
       <TileRow>
-        <label>Day</label>
+        <label>{date}</label>
       </TileRow>
       <TileRow>
         <label>{weatherDetails.weatherText}</label>

@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import { CurrentWeather } from "../components/currentWeather";
 import { DaysAheadForCast } from "../components/DaysAheadForcast";
+import { Search } from "../components/Search";
 import { useStore } from "../stores/userStore";
 import { Loader } from "../components/misc/Loader";
 
@@ -17,6 +18,7 @@ const HomepageContainer = styled.div`
 
 const HomepageRow = styled.span`
   display: flex;
+  justify-content: center; ;
 `;
 
 export const Homepage = ({ specificLocationKey }: IProps) => {
@@ -27,7 +29,6 @@ export const Homepage = ({ specificLocationKey }: IProps) => {
   const handleAquiredLocation = (pos: any) => {
     let coordinates =
       pos.coords.latitude.toString() + "," + pos.coords.longitude.toString();
-    console.log("pos is", coordinates);
     axios
       .get(
         "http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=g8cU8trXVrAZXk7GCwiSgVpBAAAbhYZ4&q=" +
@@ -35,7 +36,7 @@ export const Homepage = ({ specificLocationKey }: IProps) => {
           "&language=en-us&details=false&toplevel=false"
       )
       .then((res) => {
-        console.log("res data key is", res.data.Key);
+        setLocationID(res.data.Key);
       })
       .catch((err) => {
         console.log("location couldn't be found", err);
@@ -62,6 +63,9 @@ export const Homepage = ({ specificLocationKey }: IProps) => {
         <Loader />
       ) : (
         <HomepageContainer>
+          <HomepageRow>
+            <Search />
+          </HomepageRow>
           <HomepageRow>
             <CurrentWeather
               locationKey={specificLocationKey || locationID}

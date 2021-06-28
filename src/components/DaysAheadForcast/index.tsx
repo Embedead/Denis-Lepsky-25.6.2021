@@ -38,40 +38,48 @@ interface IProps {
   metric: boolean;
 }
 
-const daysAhead = [
+type IForecast = {
+  weatherText: string;
+  Temperature: {
+    max: number | string;
+    min: number | string;
+  };
+};
+
+const defaultForecast = [
   {
-    weatherText: "sunny",
+    weatherText: "N/A",
     Temperature: {
-      max: "38",
-      min: "24",
+      max: "N/A",
+      min: "N/A",
     },
   },
   {
-    weatherText: "sunny",
+    weatherText: "N/A",
     Temperature: {
-      max: "36",
-      min: "28",
+      max: "N/A",
+      min: "N/A",
     },
   },
   {
-    weatherText: "sunny",
+    weatherText: "N/A",
     Temperature: {
-      max: "41",
-      min: "27",
+      max: "N/A",
+      min: "N/A",
     },
   },
   {
-    weatherText: "sunny",
+    weatherText: "N/A",
     Temperature: {
-      max: "31",
-      min: "19",
+      max: "N/A",
+      min: "N/A",
     },
   },
   {
-    weatherText: "sunny",
+    weatherText: "N/A",
     Temperature: {
-      max: "33",
-      min: "29",
+      max: "N/A",
+      min: "N/A",
     },
   },
 ];
@@ -81,8 +89,32 @@ const booleanToString = (expression: boolean) => {
   return "false";
 };
 
+const dayPraser = (day: number) => {
+  let dayOfWeek = day % 7;
+  switch (dayOfWeek) {
+    case 0:
+      return "Sunday";
+    case 1:
+      return "Monday";
+    case 2:
+      return "Tuesday";
+    case 3:
+      return "Wednesday";
+    case 4:
+      return "Thursday";
+    case 5:
+      return "Friday";
+    case 6:
+      return "Saturday";
+    default:
+      return "N/A";
+  }
+};
+
 export const DaysAheadForCast = ({ locationKey, metric }: IProps) => {
+  let today = new Date().getDay();
   const { darkTheme } = useStore();
+  const [forecast, setForeacast] = React.useState<IForecast[]>(defaultForecast);
   const [currentKey, setCurrentKey] = React.useState("");
   const [currentMetric, setCurrentMetric] = React.useState<any>();
   React.useMemo(() => {
@@ -97,10 +129,21 @@ export const DaysAheadForCast = ({ locationKey, metric }: IProps) => {
             booleanToString(metric)
         )
         .then((res) => {
-          console.log("5 day forecast is", res.data);
+          let parsedForecast = res.data.DailyForecasts.map((item: any) => {
+            let newWeather = {
+              weatherText: item.weatherText,
+              Temperature: {
+                max: item.Temperature.max,
+                min: item.Temperature.min,
+              },
+            };
+            return newWeather;
+          });
+
+          setForeacast(parsedForecast);
         })
         .catch((err) => {
-          console.log("err is", err);
+          console.log("5 day forecast", err);
         });
       setCurrentKey(locationKey);
       setCurrentMetric(metric);
@@ -109,10 +152,11 @@ export const DaysAheadForCast = ({ locationKey, metric }: IProps) => {
 
   return (
     <DaysAheadContainer darkTheme={darkTheme}>
-      {daysAhead.map((item, index) => {
+      {forecast.map((item, index) => {
         return (
           <WeatherTile
-            key={index}
+            date={dayPraser(today + index + 1)}
+            key={"unique" + index}
             weatherDetails={item}
             darkTheme={darkTheme}
           />
