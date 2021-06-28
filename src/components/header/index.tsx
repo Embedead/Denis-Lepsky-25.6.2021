@@ -93,7 +93,6 @@ export const WeatherHeader = () => {
   const { metric, setMetric, darkTheme, setDarkTheme } = useStore();
   const history = useHistory();
   const handleLogoClick = () => {
-    console.log("clicked");
     window.location.assign("/");
   };
 

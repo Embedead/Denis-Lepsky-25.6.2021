@@ -1,11 +1,12 @@
-import axios from "axios";
 import React from "react";
 import styled from "styled-components";
 import { CurrentWeather } from "../components/currentWeather";
 import { DaysAheadForCast } from "../components/DaysAheadForcast";
 import { Search } from "../components/Search";
 import { useStore } from "../stores/userStore";
+import { useToast } from "../hooks/useToast";
 import { Loader } from "../components/misc/Loader";
+import { getLocationKeyByCord } from "../api/constants";
 
 interface IProps {
   specificLocationKey?: string;
@@ -23,23 +24,20 @@ const HomepageRow = styled.span`
 
 export const Homepage = ({ specificLocationKey }: IProps) => {
   const { locationID, setLocationID, metric } = useStore();
+  const { handleNewToast } = useToast();
   const [isLoading, setIsLoading] = React.useState(true);
   const location = navigator.geolocation;
 
   const handleAquiredLocation = (pos: any) => {
     let coordinates =
       pos.coords.latitude.toString() + "," + pos.coords.longitude.toString();
-    axios
-      .get(
-        "http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=g8cU8trXVrAZXk7GCwiSgVpBAAAbhYZ4&q=" +
-          coordinates +
-          "&language=en-us&details=false&toplevel=false"
-      )
+
+    getLocationKeyByCord(coordinates)
       .then((res) => {
         setLocationID(res.data.Key);
       })
       .catch((err) => {
-        console.log("location couldn't be found", err);
+        handleNewToast("couldn't find location name, network error");
       });
   };
 

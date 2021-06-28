@@ -7,7 +7,6 @@ interface IProps {
   darkTheme: boolean;
   date: string;
   weatherDetails: {
-    weatherText: string;
     Temperature: {
       max: string | number;
       min: string | number;
@@ -52,9 +51,6 @@ export const WeatherTile = ({ weatherDetails, darkTheme, date }: IProps) => {
     <Tile darkTheme={darkTheme}>
       <TileRow>
         <label>{date}</label>
-      </TileRow>
-      <TileRow>
-        <label>{weatherDetails.weatherText}</label>
       </TileRow>
       <TileRow>
         <label>

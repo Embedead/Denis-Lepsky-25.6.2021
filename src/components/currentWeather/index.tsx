@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { theme, flowUP } from "../../theme";
-import axios from "axios";
 import { LocationTitle } from "./LocationTitle";
 import { Favorite } from "./Favorite";
 import { Loader } from "../misc/Loader";
 import { useStore } from "../../stores/userStore";
+import { useToast } from "../../hooks/useToast";
+import { getWeatherByLocationId } from "../../api/constants";
 interface IProps {
   locationKey: string;
   metric: boolean;
@@ -56,18 +57,15 @@ const CurrentWeatherContainer = styled.div<ICurrentWeatherContainer>`
 
 export const CurrentWeather = ({ locationKey, metric }: IProps) => {
   const { darkTheme } = useStore();
+  const { handleNewToast } = useToast();
   const [isLoading, setIsLoading] = React.useState(false);
   const [currentWeather, setCurrentWeather] =
     React.useState<IWeather>(defaultWeather);
 
-  React.useMemo(() => {
+  React.useEffect(() => {
     setIsLoading(true);
-    axios
-      .get(
-        "https://dataservice.accuweather.com/currentconditions/v1/" +
-          locationKey +
-          "?apikey=g8cU8trXVrAZXk7GCwiSgVpBAAAbhYZ4&language=en-us&details=false"
-      )
+
+    getWeatherByLocationId(locationKey)
       .then((res) => {
         let weather = {
           weatherText: res.data[0].WeatherText,
@@ -79,9 +77,10 @@ export const CurrentWeather = ({ locationKey, metric }: IProps) => {
         setCurrentWeather(weather);
       })
       .catch((err) => {
-        if (err.toString().includes("Network Error"))
-          console.log("weather by key", err);
-        setCurrentWeather(defaultWeather);
+        if (err.toString().includes("Network Error")) {
+          handleNewToast("couldn't get current weather, network error");
+          setCurrentWeather(defaultWeather);
+        }
       });
     setIsLoading(false);
   }, [locationKey]);

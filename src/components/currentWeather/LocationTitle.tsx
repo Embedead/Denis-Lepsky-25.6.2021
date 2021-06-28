@@ -1,6 +1,7 @@
 import React from "react";
-import axios from "axios";
 import styled from "styled-components";
+import { getLocationNameByKey } from "../../api/constants";
+import { useToast } from "../../hooks/useToast";
 
 interface IProps {
   locationKey: string;
@@ -14,20 +15,16 @@ const LocationContainer = styled.div`
 `;
 
 export const LocationTitle = ({ locationKey }: IProps) => {
+  const { handleNewToast } = useToast();
   const [location, setLocation] = React.useState("");
 
-  React.useMemo(() => {
-    axios
-      .get(
-        "https://dataservice.accuweather.com/locations/v1/" +
-          locationKey +
-          "?apikey=g8cU8trXVrAZXk7GCwiSgVpBAAAbhYZ4&language=en-us&details=false"
-      )
+  React.useEffect(() => {
+    getLocationNameByKey(locationKey)
       .then((res) => {
         setLocation(res.data.LocalizedName);
       })
       .catch((err) => {
-        console.log("location title error is", err);
+        handleNewToast("couldn't access location title, network error");
         setLocation("N/A");
       });
   }, [locationKey]);

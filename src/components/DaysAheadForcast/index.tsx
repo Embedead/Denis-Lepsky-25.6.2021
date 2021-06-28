@@ -2,17 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import { theme, flowUP } from "../../theme";
 import { WeatherTile } from "./WeatherTile";
-import axios from "axios";
 import { useStore } from "../../stores/userStore";
+import { useToast } from "../../hooks/useToast";
 import { IDarkTheme } from "../misc/interfaces";
+import { get5DayForecast } from "../../api/constants";
 
 const DaysAheadContainer = styled.div<IDarkTheme>`
   animation: ${flowUP} 0.5s linear 250ms forwards;
   opacity: 0;
   display: flex;
   flex-direction: row;
-  /* justify-content: center; */
-  /* align-items: center; */
+
   flex-wrap: wrap;
   @media only screen and (max-width: 600px) {
     flex-direction: column;
@@ -39,7 +39,6 @@ interface IProps {
 }
 
 type IForecast = {
-  weatherText: string;
   Temperature: {
     max: number | string;
     min: number | string;
@@ -48,35 +47,30 @@ type IForecast = {
 
 const defaultForecast = [
   {
-    weatherText: "N/A",
     Temperature: {
       max: "N/A",
       min: "N/A",
     },
   },
   {
-    weatherText: "N/A",
     Temperature: {
       max: "N/A",
       min: "N/A",
     },
   },
   {
-    weatherText: "N/A",
     Temperature: {
       max: "N/A",
       min: "N/A",
     },
   },
   {
-    weatherText: "N/A",
     Temperature: {
       max: "N/A",
       min: "N/A",
     },
   },
   {
-    weatherText: "N/A",
     Temperature: {
       max: "N/A",
       min: "N/A",
@@ -114,27 +108,22 @@ const dayPraser = (day: number) => {
 export const DaysAheadForCast = ({ locationKey, metric }: IProps) => {
   let today = new Date().getDay();
   const { darkTheme } = useStore();
+  const { handleNewToast } = useToast();
   const [forecast, setForeacast] = React.useState<IForecast[]>(defaultForecast);
   const [currentKey, setCurrentKey] = React.useState("");
   const [currentMetric, setCurrentMetric] = React.useState<any>();
-  React.useMemo(() => {
+  React.useEffect(() => {
     if (currentKey === locationKey && currentMetric === metric) {
       console.log("same");
     } else {
-      axios
-        .get(
-          "http://dataservice.accuweather.com/forecasts/v1/daily/5day/" +
-            locationKey +
-            "?apikey=g8cU8trXVrAZXk7GCwiSgVpBAAAbhYZ4&language=en-us&details=false&metric=" +
-            booleanToString(metric)
-        )
+      get5DayForecast(locationKey, booleanToString(metric))
         .then((res) => {
+          console.log("res data", res.data);
           let parsedForecast = res.data.DailyForecasts.map((item: any) => {
             let newWeather = {
-              weatherText: item.weatherText,
               Temperature: {
-                max: item.Temperature.max,
-                min: item.Temperature.min,
+                max: item.Temperature.Maximum.Value,
+                min: item.Temperature.Minimum.Value,
               },
             };
             return newWeather;
@@ -143,7 +132,7 @@ export const DaysAheadForCast = ({ locationKey, metric }: IProps) => {
           setForeacast(parsedForecast);
         })
         .catch((err) => {
-          console.log("5 day forecast", err);
+          handleNewToast("couldn't load 5 day forecast, network error");
         });
       setCurrentKey(locationKey);
       setCurrentMetric(metric);

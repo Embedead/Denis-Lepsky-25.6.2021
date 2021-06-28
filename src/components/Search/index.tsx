@@ -1,10 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { useStore } from "../../stores/userStore";
+import { useToast } from "../../hooks/useToast";
 import { theme } from "../../theme";
 import { IDarkTheme } from "../misc/interfaces";
-import axios from "axios";
 import { MdSearch } from "react-icons/md";
+import { getSearchResults } from "../../api/constants";
+import { SearchResults } from "./Results";
 
 const SearchContainer = styled.div<IDarkTheme>`
   position: relative;
@@ -19,6 +21,7 @@ const SearchContainer = styled.div<IDarkTheme>`
   border-radius: 0.5rem;
   color: ${(props) =>
     props.darkTheme ? theme.colors.white : theme.colors.black};
+  transition: all 0.5s linear;
   @media only screen and (max-width: 600px) {
   }
   background-color: ${(props) =>
@@ -37,19 +40,35 @@ const SearchContainer = styled.div<IDarkTheme>`
 
 export const Search = () => {
   const { darkTheme, setLocationID } = useStore();
+  const { handleNewToast } = useToast();
   const [searchValue, setSearchValue] = React.useState("");
-  React.useMemo(() => {
-    axios
-      .get(
-        "http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=g8cU8trXVrAZXk7GCwiSgVpBAAAbhYZ4&q=" +
-          searchValue +
-          "&language=en-us"
-      )
-      .then((res) => {
-        console.log("res data is", res.data);
-      });
+  const [results, setResults] = React.useState<any[]>([]);
+  React.useEffect(() => {
+    if (searchValue !== "") {
+      console.log("search value is", searchValue);
+      getSearchResults(searchValue)
+        .then((res) => {
+          console.log("results data is", res.data);
+          let currentResults = res.data.map((item: any) => {
+            let newResult = {
+              key: item.Key,
+              localizedName: item.LocalizedName,
+              adminArea: item.AdministrativeArea.LocalizedName,
+              country: item.Country.LocalizedName,
+            };
+            return newResult;
+          });
+
+          setResults(currentResults);
+        })
+        .catch((err) => {
+          handleNewToast("couldn't get search results to show, network error");
+        });
+    } else {
+      setResults([]);
+    }
   }, [searchValue]);
-  console.log("search value is", searchValue);
+
   return (
     <SearchContainer darkTheme={darkTheme}>
       <input
@@ -59,6 +78,9 @@ export const Search = () => {
         onChange={(e) => setSearchValue(e.target.value)}
       />
       <MdSearch />
+      {results.length > 0 && (
+        <SearchResults results={results} setResults={setResults} />
+      )}
     </SearchContainer>
   );
 };
