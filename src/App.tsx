@@ -5,7 +5,6 @@ import { Homepage } from "./pages/Homepage";
 import { FavoritesPage } from "./pages/Favorites";
 import styled from "styled-components";
 import { WeatherHeader } from "./components/header";
-import { Search } from "./components/Search";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -24,13 +23,12 @@ const AppContainer = styled.div`
 function App() {
   return (
     <AppContainer>
-      <ToastContainer />
+      <ToastContainer autoClose={1500} pauseOnFocusLoss={false} />
       <Router>
         <WeatherHeader />
 
         <Switch>
           <Route exact path="/">
-            {/* <Search /> */}
             <Homepage />
           </Route>
           <Route exact path="/favorites">

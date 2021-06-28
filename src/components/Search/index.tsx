@@ -2,11 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import { useStore } from "../../stores/userStore";
 import { useToast } from "../../hooks/useToast";
-import { theme } from "../../theme";
+import { theme, flowUP } from "../../theme";
 import { IDarkTheme } from "../misc/interfaces";
 import { MdSearch } from "react-icons/md";
 import { getSearchResults } from "../../api/constants";
 import { SearchResults } from "./Results";
+import { toast } from "react-toastify";
 
 const SearchContainer = styled.div<IDarkTheme>`
   position: relative;
@@ -19,6 +20,7 @@ const SearchContainer = styled.div<IDarkTheme>`
   font-weight: 700;
   flex-grow: 1;
   border-radius: 0.5rem;
+  box-shadow: 0px 2px 8px 4px rgba(0, 0, 0, 0.15);
   color: ${(props) =>
     props.darkTheme ? theme.colors.white : theme.colors.black};
   transition: all 0.5s linear;
@@ -31,6 +33,8 @@ const SearchContainer = styled.div<IDarkTheme>`
     padding: 0.25rem;
     border: none;
     font-size: 1rem;
+    color: ${(props) =>
+      props.darkTheme ? theme.colors.white : theme.colors.black};
     background-color: rgba(0, 0, 0, 0);
     &:focus {
       outline: none;
@@ -39,8 +43,9 @@ const SearchContainer = styled.div<IDarkTheme>`
 `;
 
 export const Search = () => {
+  const toastId = React.useRef(null);
   const { darkTheme, setLocationID } = useStore();
-  const { handleNewToast } = useToast();
+  const { addKnownToast } = useToast();
   const [searchValue, setSearchValue] = React.useState("");
   const [results, setResults] = React.useState<any[]>([]);
   React.useEffect(() => {
@@ -62,7 +67,7 @@ export const Search = () => {
           setResults(currentResults);
         })
         .catch((err) => {
-          handleNewToast("couldn't get search results to show, network error");
+          addKnownToast("couldn't get search results to show, network error");
         });
     } else {
       setResults([]);
