@@ -1,14 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useStore } from "../stores/userStore";
-
+import { Favorites } from "../components/favorites";
 export const FavoritesPage = () => {
-  const { favorites } = useStore();
-  return (
-    <div>
-      {favorites.map((item, index) => {
-        return <label key={index}>{item}</label>;
-      })}
-    </div>
-  );
+  return <Favorites />;
 };

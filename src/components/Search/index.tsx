@@ -7,7 +7,8 @@ import { IDarkTheme } from "../misc/interfaces";
 import { MdSearch } from "react-icons/md";
 import { getSearchResults } from "../../api/constants";
 import { SearchResults } from "./Results";
-import { toast } from "react-toastify";
+import { useRef } from "react";
+import useOnClickOutside from "../../hooks/useOnClickOutside";
 
 const SearchContainer = styled.div<IDarkTheme>`
   position: relative;
@@ -21,6 +22,7 @@ const SearchContainer = styled.div<IDarkTheme>`
   flex-grow: 1;
   border-radius: 0.5rem;
   box-shadow: 0px 2px 8px 4px rgba(0, 0, 0, 0.15);
+  animation: ${flowUP} 0.4s linear;
   color: ${(props) =>
     props.darkTheme ? theme.colors.white : theme.colors.black};
   transition: all 0.5s linear;
@@ -33,6 +35,9 @@ const SearchContainer = styled.div<IDarkTheme>`
     padding: 0.25rem;
     border: none;
     font-size: 1rem;
+    @media only screen and (max-width: 600px) {
+      padding: 0.75rem 0.25rem;
+    }
     color: ${(props) =>
       props.darkTheme ? theme.colors.white : theme.colors.black};
     background-color: rgba(0, 0, 0, 0);
@@ -43,11 +48,20 @@ const SearchContainer = styled.div<IDarkTheme>`
 `;
 
 export const Search = () => {
-  const toastId = React.useRef(null);
-  const { darkTheme, setLocationID } = useStore();
+  const { darkTheme } = useStore();
   const { addKnownToast } = useToast();
+  const resultsRef = useRef(null);
   const [searchValue, setSearchValue] = React.useState("");
   const [results, setResults] = React.useState<any[]>([]);
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const handleClickOutside = () => {
+    setIsOpen(false);
+    setSearchValue("");
+  };
+
+  useOnClickOutside(resultsRef, handleClickOutside);
+
   React.useEffect(() => {
     if (searchValue !== "") {
       console.log("search value is", searchValue);
@@ -65,6 +79,7 @@ export const Search = () => {
           });
 
           setResults(currentResults);
+          setIsOpen(true);
         })
         .catch((err) => {
           addKnownToast("couldn't get search results to show, network error");
@@ -83,8 +98,10 @@ export const Search = () => {
         onChange={(e) => setSearchValue(e.target.value)}
       />
       <MdSearch />
-      {results.length > 0 && (
-        <SearchResults results={results} setResults={setResults} />
+      {results.length > 0 && isOpen && (
+        <div ref={resultsRef}>
+          <SearchResults results={results} setResults={setResults} />
+        </div>
       )}
     </SearchContainer>
   );

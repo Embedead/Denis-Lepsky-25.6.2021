@@ -7,10 +7,14 @@ import styled from "styled-components";
 import { WeatherHeader } from "./components/header";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { IDarkTheme } from "./components/misc/interfaces";
+import { useStore } from "./stores/userStore";
+import { WeatherFooter } from "./components/footer";
 
-const AppContainer = styled.div`
+const AppContainer = styled.div<IDarkTheme>`
   position: absolute;
-  background-color: #f2c760;
+  transition: all 0.5s linear;
+  background-color: ${(props) => (props.darkTheme ? "#0C3853" : "#f2c760")};
   width: 100%;
   height: 100%;
   overflow: auto;
@@ -21,12 +25,12 @@ const AppContainer = styled.div`
 `;
 
 function App() {
+  const { darkTheme } = useStore();
   return (
-    <AppContainer>
+    <AppContainer darkTheme={darkTheme}>
       <ToastContainer autoClose={1500} pauseOnFocusLoss={false} />
       <Router>
         <WeatherHeader />
-
         <Switch>
           <Route exact path="/">
             <Homepage />
@@ -35,6 +39,7 @@ function App() {
             <FavoritesPage />
           </Route>
         </Switch>
+        <WeatherFooter />
       </Router>
     </AppContainer>
   );

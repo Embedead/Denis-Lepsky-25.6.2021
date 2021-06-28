@@ -6,6 +6,7 @@ import { useStore } from "../../stores/userStore";
 import { useToast } from "../../hooks/useToast";
 import { IDarkTheme } from "../misc/interfaces";
 import { get5DayForecast } from "../../api/constants";
+import { dayPraser, defaultForecast } from "../misc/lut";
 
 const DaysAheadContainer = styled.div<IDarkTheme>`
   animation: ${flowUP} 0.5s linear 250ms forwards;
@@ -45,64 +46,9 @@ type IForecast = {
   };
 };
 
-const defaultForecast = [
-  {
-    Temperature: {
-      max: "N/A",
-      min: "N/A",
-    },
-  },
-  {
-    Temperature: {
-      max: "N/A",
-      min: "N/A",
-    },
-  },
-  {
-    Temperature: {
-      max: "N/A",
-      min: "N/A",
-    },
-  },
-  {
-    Temperature: {
-      max: "N/A",
-      min: "N/A",
-    },
-  },
-  {
-    Temperature: {
-      max: "N/A",
-      min: "N/A",
-    },
-  },
-];
-
 const booleanToString = (expression: boolean) => {
   if (expression) return "true";
   return "false";
-};
-
-const dayPraser = (day: number) => {
-  let dayOfWeek = day % 7;
-  switch (dayOfWeek) {
-    case 0:
-      return "Sunday";
-    case 1:
-      return "Monday";
-    case 2:
-      return "Tuesday";
-    case 3:
-      return "Wednesday";
-    case 4:
-      return "Thursday";
-    case 5:
-      return "Friday";
-    case 6:
-      return "Saturday";
-    default:
-      return "N/A";
-  }
 };
 
 export const DaysAheadForCast = ({ locationKey, metric }: IProps) => {

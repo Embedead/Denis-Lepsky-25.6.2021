@@ -13,6 +13,9 @@ const ResultsContainer = styled.div<IDarkTheme>`
   position: absolute;
   z-index: 30;
   top: 2.5rem;
+  @media only screen and (max-width: 600px) {
+    top: 3.5rem;
+  }
   left: 0;
   right: 0;
   display: flex;
@@ -25,6 +28,10 @@ const ResultsContainer = styled.div<IDarkTheme>`
   color: ${(props) =>
     props.darkTheme ? theme.colors.white : theme.colors.black};
   padding: 0.5rem;
+  box-shadow: ${(props) =>
+    props.darkTheme
+      ? "0 2px 4px 4px rgba(255,255,255,0.05)"
+      : "0 2px 4px 4px rgba(0,0,0,0.15)"};
 `;
 
 const Result = styled.span<IDarkTheme>`

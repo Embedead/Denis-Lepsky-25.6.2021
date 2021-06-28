@@ -69,9 +69,10 @@ const LinksSpan = styled.span`
     font-size: 1.5rem;
     margin: 0 0.25rem;
     padding: 0 0.25rem;
+    justify-self: center;
+    align-self: center;
     &:hover {
       color: ${theme.colors.main};
-      border-radius: 0.25rem;
     }
   }
 `;
@@ -97,7 +98,7 @@ export const WeatherHeader = () => {
         <label onClick={() => setDarkTheme(!darkTheme)}>
           {darkTheme ? "dark" : "light"}
         </label>
-        <label onClick={() => setMetric(!metric)}>{metric ? "C" : "F"}</label>
+        <label onClick={() => setMetric(!metric)}>{metric ? "C°" : "F°"}</label>
         <label onClick={() => handleHistoryPush("/")}>
           <MdHome />
         </label>

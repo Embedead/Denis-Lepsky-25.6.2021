@@ -26,7 +26,7 @@ const Tile = styled.div<IDarkTheme>`
     flex-wrap: wrap;
   }
   background-color: ${(props) =>
-    props.darkTheme ? "#121212" : theme.colors.white};
+    props.darkTheme ? "#202020" : theme.colors.white};
   transition: all 0.5s linear;
   border-radius: 1rem;
   margin: 0.5rem 1rem;

@@ -1,5 +1,4 @@
 import axios from "axios";
-// import { BASE_URL, api_key } from "./apiWorker";
 
 const BASE_URL = "https://dataservice.accuweather.com";
 const api_key = "jlTotreoBf71iErBfZuafN0GwopmAsG5";
@@ -12,14 +11,6 @@ export const getSearchResults = (data: string) => {
       data +
       "&language=en-us"
   );
-};
-
-const defaultWeather = {
-  weatherText: "null",
-  Temperature: {
-    Imperial: "null",
-    Metric: "null",
-  },
 };
 
 export const getWeatherByLocationId = (locationKey: string) => {
