@@ -15,6 +15,10 @@ const FavoriteLabel = styled.label<IDarkTheme>`
   align-self: flex-end;
   color: ${(props) =>
     props.darkTheme ? theme.colors.white : theme.colors.black};
+  cursor: pointer;
+  &:hover {
+    color: ${theme.colors.main};
+  }
 `;
 
 export const Favorite = ({ locationKey }: IProps) => {

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { getLocationNameByKey } from "../../api/constants";
 import { useToast } from "../../hooks/useToast";
 import { useStore } from "../../stores/userStore";
+import { theme } from "../../theme";
 
 interface IProps {
   locationKey: string;
@@ -14,6 +15,9 @@ const LocationContainer = styled.div`
   label {
     font-size: 1.5rem;
     cursor: pointer;
+    &:hover {
+      color: ${theme.colors.main};
+    }
   }
 `;
 

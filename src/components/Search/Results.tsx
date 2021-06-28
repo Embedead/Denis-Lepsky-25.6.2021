@@ -38,8 +38,12 @@ const Result = styled.span<IDarkTheme>`
   display: flex;
   flex-grow: 1;
   border-bottom: 1px solid gray;
-  padding: 0.5rem;
+  padding: 0.25rem;
   margin: 0.5rem 0;
+  font-size: 1.25rem;
+  &:hover {
+    color: ${theme.colors.main};
+  }
 `;
 
 export const SearchResults = ({ results, setResults }: IProps) => {

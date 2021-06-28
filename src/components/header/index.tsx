@@ -69,11 +69,23 @@ const LinksSpan = styled.span`
     font-size: 1.5rem;
     margin: 0 0.25rem;
     padding: 0 0.25rem;
-    justify-self: center;
+    /* justify-self: center; */
     align-self: center;
     &:hover {
       color: ${theme.colors.main};
     }
+  }
+`;
+
+const IconContainer = styled.span`
+  display: flex;
+  cursor: pointer;
+  font-size: 1.5rem;
+  margin: 0 0.25rem;
+  padding: 0 0.25rem;
+  align-self: center;
+  &:hover {
+    color: ${theme.colors.main};
   }
 `;
 
@@ -99,12 +111,12 @@ export const WeatherHeader = () => {
           {darkTheme ? "dark" : "light"}
         </label>
         <label onClick={() => setMetric(!metric)}>{metric ? "C°" : "F°"}</label>
-        <label onClick={() => handleHistoryPush("/")}>
+        <IconContainer onClick={() => handleHistoryPush("/")}>
           <MdHome />
-        </label>
-        <label onClick={() => handleHistoryPush("/favorites")}>
+        </IconContainer>
+        <IconContainer onClick={() => handleHistoryPush("/favorites")}>
           <MdFavorite />
-        </label>
+        </IconContainer>
       </LinksSpan>
     </HeaderContainer>
   );
