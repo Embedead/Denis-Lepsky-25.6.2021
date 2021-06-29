@@ -1,9 +1,9 @@
 import axios from "axios";
 
 const BASE_URL = "https://dataservice.accuweather.com";
-// const api_key = "jlTotreoBf71iErBfZuafN0GwopmAsG5";
-//reserve api key
 const api_key = "g8cU8trXVrAZXk7GCwiSgVpBAAAbhYZ4";
+//reserve api key
+// const api_key = "wEmvwpDMYWd2FoRluSQmHGL5F8HhBwEJ";
 export const getSearchResults = (data: string) => {
   return axios.get(
     BASE_URL +

@@ -71,26 +71,28 @@ export const CurrentWeather = ({
     React.useState<IWeather>(defaultWeather);
 
   React.useEffect(() => {
-    setIsLoading(true);
+    if (locationKey !== "") {
+      setIsLoading(true);
 
-    getWeatherByLocationId(locationKey)
-      .then((res) => {
-        let weather = {
-          weatherText: res.data[0].WeatherText,
-          Temperature: {
-            Imperial: res.data[0].Temperature.Imperial.Value,
-            Metric: res.data[0].Temperature.Metric.Value,
-          },
-        };
-        setCurrentWeather(weather);
-      })
-      .catch((err) => {
-        if (err.toString().includes("Network Error")) {
-          handleNewToast("couldn't get current weather, network error");
-          setCurrentWeather(defaultWeather);
-        }
-      });
-    setIsLoading(false);
+      getWeatherByLocationId(locationKey)
+        .then((res) => {
+          let weather = {
+            weatherText: res.data[0].WeatherText,
+            Temperature: {
+              Imperial: res.data[0].Temperature.Imperial.Value,
+              Metric: res.data[0].Temperature.Metric.Value,
+            },
+          };
+          setCurrentWeather(weather);
+        })
+        .catch((err) => {
+          if (err.toString().includes("Network Error")) {
+            handleNewToast("couldn't get current weather, network error");
+            setCurrentWeather(defaultWeather);
+          }
+        });
+      setIsLoading(false);
+    }
   }, [locationKey]);
 
   return (

@@ -9,6 +9,7 @@ import { getLocationKeyByCord } from "../api/basicAPI";
 import { Dispatch } from "redux";
 import { useSelector, useDispatch } from "react-redux";
 import { setLocationID } from "../store/actionCreators";
+import { toast } from "react-toastify";
 
 const HomepageContainer = styled.div`
   display: flex;
@@ -32,18 +33,24 @@ export const Homepage = () => {
     let coordinates =
       pos.coords.latitude.toString() + "," + pos.coords.longitude.toString();
 
-    getLocationKeyByCord(coordinates)
-      .then((res) => {
-        dispatch(setLocationID(res.data.Key));
-      })
-      .catch((err) => {
-        handleNewToast("couldn't find location name, network error");
-      });
+    if (locationID === "") {
+      getLocationKeyByCord(coordinates)
+        .then((res) => {
+          let newLocationKey = res.data.Key;
+          dispatch(setLocationID(newLocationKey));
+        })
+        .catch((err) => {
+          handleNewToast("couldn't find location name, network error");
+        });
+    }
   };
 
   const findLocation = () => {
     const error = (err: any) => {
       handleNewToast("couldn't aquire device location");
+      if (locationID === "") {
+        dispatch(setLocationID("215854"));
+      }
     };
 
     location.getCurrentPosition(handleAquiredLocation, error);

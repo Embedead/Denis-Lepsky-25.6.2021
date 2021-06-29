@@ -30,14 +30,16 @@ export const LocationTitle = ({ locationKey }: IProps) => {
   const [location, setLocation] = React.useState("");
 
   React.useEffect(() => {
-    getLocationNameByKey(locationKey)
-      .then((res) => {
-        setLocation(res.data.LocalizedName);
-      })
-      .catch((err) => {
-        handleNewToast("couldn't access location title, network error");
-        setLocation("N/A");
-      });
+    if (locationKey !== "") {
+      getLocationNameByKey(locationKey)
+        .then((res) => {
+          setLocation(res.data.LocalizedName);
+        })
+        .catch((err) => {
+          handleNewToast("couldn't access location title, network error");
+          setLocation("N/A");
+        });
+    }
   }, [locationKey]);
 
   const handleTileClick = (locationKey: string) => {

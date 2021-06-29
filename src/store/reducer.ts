@@ -2,7 +2,7 @@ import { STATEMENT_OR_BLOCK_KEYS } from "@babel/types";
 import * as actionTypes from "./actionTypes";
 
 const initialState: IUserStore = {
-  locationID: "215854",
+  locationID: "",
   favorites: [],
   metric: true,
   darkTheme: false,

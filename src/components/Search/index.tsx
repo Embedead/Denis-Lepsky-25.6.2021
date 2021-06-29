@@ -63,10 +63,8 @@ export const Search = () => {
 
   const handleEnterPress = () => {
     if (searchValue !== "") {
-      console.log("search value is", searchValue);
       getSearchResults(searchValue)
         .then((res) => {
-          console.log("results data is", res.data);
           let currentResults = res.data.map((item: any) => {
             let newResult = {
               key: item.Key,

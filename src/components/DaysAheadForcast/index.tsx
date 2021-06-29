@@ -57,27 +57,29 @@ export const DaysAheadForCast = ({ locationKey, metric }: IProps) => {
   const [currentKey, setCurrentKey] = React.useState("");
   const [currentMetric, setCurrentMetric] = React.useState<any>();
   React.useEffect(() => {
-    if (currentKey === locationKey && currentMetric === metric) {
-    } else {
-      get5DayForecast(locationKey, booleanToString(metric))
-        .then((res) => {
-          let parsedForecast = res.data.DailyForecasts.map((item: any) => {
-            let newWeather = {
-              Temperature: {
-                max: item.Temperature.Maximum.Value,
-                min: item.Temperature.Minimum.Value,
-              },
-            };
-            return newWeather;
-          });
+    if (locationKey !== "") {
+      if (currentKey === locationKey && currentMetric === metric) {
+      } else {
+        get5DayForecast(locationKey, booleanToString(metric))
+          .then((res) => {
+            let parsedForecast = res.data.DailyForecasts.map((item: any) => {
+              let newWeather = {
+                Temperature: {
+                  max: item.Temperature.Maximum.Value,
+                  min: item.Temperature.Minimum.Value,
+                },
+              };
+              return newWeather;
+            });
 
-          setForeacast(parsedForecast);
-        })
-        .catch((err) => {
-          handleNewToast("couldn't load 5 day forecast, network error");
-        });
-      setCurrentKey(locationKey);
-      setCurrentMetric(metric);
+            setForeacast(parsedForecast);
+          })
+          .catch((err) => {
+            handleNewToast("couldn't load 5 day forecast, network error");
+          });
+        setCurrentKey(locationKey);
+        setCurrentMetric(metric);
+      }
     }
   }, [locationKey, metric]);
 
