@@ -1,4 +1,5 @@
-export const dayPraser = (day: number) => {
+//look-up table for simple objects and functions that take extra space
+export const giveDayOfWeek = (day: number) => {
   let dayOfWeek = day % 7;
   switch (dayOfWeek) {
     case 0:

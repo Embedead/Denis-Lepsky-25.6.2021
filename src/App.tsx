@@ -7,9 +7,8 @@ import styled from "styled-components";
 import { WeatherHeader } from "./components/header";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { IDarkTheme } from "./components/misc/interfaces";
-import { useStore } from "./stores/userStore";
 import { WeatherFooter } from "./components/footer";
+import { useSelector } from "react-redux";
 
 const AppContainer = styled.div<IDarkTheme>`
   position: absolute;
@@ -25,7 +24,7 @@ const AppContainer = styled.div<IDarkTheme>`
 `;
 
 function App() {
-  const { darkTheme } = useStore();
+  const darkTheme = useSelector((state: IUserStore) => state.darkTheme);
   return (
     <AppContainer darkTheme={darkTheme}>
       <ToastContainer autoClose={1500} pauseOnFocusLoss={false} />

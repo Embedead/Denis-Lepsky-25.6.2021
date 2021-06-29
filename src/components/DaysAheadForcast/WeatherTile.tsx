@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { theme, flowUP } from "../../theme";
-import { IDarkTheme } from "../misc/interfaces";
 
 interface IProps {
   darkTheme: boolean;
