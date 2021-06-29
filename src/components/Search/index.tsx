@@ -61,7 +61,7 @@ export const Search = () => {
 
   useOnClickOutside(resultsRef, handleClickOutside);
 
-  React.useEffect(() => {
+  const handleEnterPress = () => {
     if (searchValue !== "") {
       console.log("search value is", searchValue);
       getSearchResults(searchValue)
@@ -86,7 +86,7 @@ export const Search = () => {
     } else {
       setResults([]);
     }
-  }, [searchValue]);
+  };
 
   return (
     <SearchContainer darkTheme={darkTheme}>
@@ -95,6 +95,9 @@ export const Search = () => {
         placeholder="Search Cities..."
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
+        onKeyPress={(e) => {
+          if (e.key === "Enter") handleEnterPress();
+        }}
       />
       <MdSearch />
       {results.length > 0 && isOpen && (
