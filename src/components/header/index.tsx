@@ -4,8 +4,9 @@ import WeatherLogo from "../../images/WeatherLogo.png";
 import { useHistory } from "react-router-dom";
 import { theme } from "../../theme";
 import { MdHome, MdFavorite } from "react-icons/md";
-import { useStore } from "../../stores/userStore";
-import { IDarkTheme } from "../misc/interfaces";
+import { Dispatch } from "redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setDarkTheme, setMetric } from "../../store/actionCreators";
 
 const expand = keyframes`
   from{
@@ -90,7 +91,10 @@ const IconContainer = styled.span`
 `;
 
 export const WeatherHeader = () => {
-  const { metric, setMetric, darkTheme, setDarkTheme } = useStore();
+  const dispatch: Dispatch<any> = useDispatch();
+  const darkTheme = useSelector((state: IUserStore) => state.darkTheme);
+  const metric = useSelector((state: IUserStore) => state.metric);
+
   const history = useHistory();
   const handleLogoClick = () => {
     window.location.assign("/");
@@ -107,10 +111,12 @@ export const WeatherHeader = () => {
         <label>WeatherApp</label>
       </LogoSpan>
       <LinksSpan>
-        <label onClick={() => setDarkTheme(!darkTheme)}>
+        <label onClick={() => dispatch(setDarkTheme(!darkTheme))}>
           {darkTheme ? "dark" : "light"}
         </label>
-        <label onClick={() => setMetric(!metric)}>{metric ? "C°" : "F°"}</label>
+        <label onClick={() => dispatch(setMetric(!metric))}>
+          {metric ? "C°" : "F°"}
+        </label>
         <IconContainer onClick={() => handleHistoryPush("/")}>
           <MdHome />
         </IconContainer>

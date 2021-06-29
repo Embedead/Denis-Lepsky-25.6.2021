@@ -2,12 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { theme, flowUP } from "../../theme";
 import { WeatherTile } from "./WeatherTile";
-import { useStore } from "../../stores/userStore";
 import { useToast } from "../../hooks/useToast";
-import { IDarkTheme } from "../misc/interfaces";
-import { get5DayForecast } from "../../api/constants";
-import { dayPraser, defaultForecast } from "../misc/lut";
-
+import { get5DayForecast } from "../../api/basicAPI";
+import { giveDayOfWeek, defaultForecast } from "../misc/lut";
+import { useSelector } from "react-redux";
 const DaysAheadContainer = styled.div<IDarkTheme>`
   animation: ${flowUP} 0.5s linear 250ms forwards;
   opacity: 0;
@@ -52,19 +50,17 @@ const booleanToString = (expression: boolean) => {
 };
 
 export const DaysAheadForCast = ({ locationKey, metric }: IProps) => {
-  let today = new Date().getDay();
-  const { darkTheme } = useStore();
+  const today = new Date().getDay();
+  const darkTheme = useSelector((state: IUserStore) => state.darkTheme);
   const { handleNewToast } = useToast();
   const [forecast, setForeacast] = React.useState<IForecast[]>(defaultForecast);
   const [currentKey, setCurrentKey] = React.useState("");
   const [currentMetric, setCurrentMetric] = React.useState<any>();
   React.useEffect(() => {
     if (currentKey === locationKey && currentMetric === metric) {
-      console.log("same");
     } else {
       get5DayForecast(locationKey, booleanToString(metric))
         .then((res) => {
-          console.log("res data", res.data);
           let parsedForecast = res.data.DailyForecasts.map((item: any) => {
             let newWeather = {
               Temperature: {
@@ -90,7 +86,7 @@ export const DaysAheadForCast = ({ locationKey, metric }: IProps) => {
       {forecast.map((item, index) => {
         return (
           <WeatherTile
-            date={dayPraser(today + index + 1)}
+            date={giveDayOfWeek(today + index + 1)}
             key={"unique" + index}
             weatherDetails={item}
             darkTheme={darkTheme}

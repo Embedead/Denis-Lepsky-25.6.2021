@@ -1,11 +1,9 @@
 import React from "react";
-import { errorStore } from "../stores/errorStore";
 import { toast } from "react-toastify";
 
 export const useToast = () => {
-  const { setErr } = errorStore();
   const handleNewToast = (errorMessage: string) => {
-    setErr(errorMessage);
+    toast.error(errorMessage);
   };
 
   const addKnownToast = (errorMessage: string) => {

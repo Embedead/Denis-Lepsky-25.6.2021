@@ -4,12 +4,17 @@ import { theme, flowUP } from "../../theme";
 import { LocationTitle } from "./LocationTitle";
 import { Favorite } from "./Favorite";
 import { Loader } from "../misc/Loader";
-import { useStore } from "../../stores/userStore";
 import { useToast } from "../../hooks/useToast";
-import { getWeatherByLocationId } from "../../api/constants";
+import { getWeatherByLocationId } from "../../api/basicAPI";
+import { useSelector } from "react-redux";
 interface IProps {
   locationKey: string;
   metric: boolean;
+  enableShadow: boolean;
+}
+
+interface ICurrentContainer extends IDarkTheme {
+  enableShadow: boolean;
 }
 
 interface IWeather {
@@ -28,11 +33,7 @@ const defaultWeather = {
   },
 };
 
-interface ICurrentWeatherContainer {
-  darkTheme: boolean;
-}
-
-const CurrentWeatherContainer = styled.div<ICurrentWeatherContainer>`
+const CurrentWeatherContainer = styled.div<ICurrentContainer>`
   animation: ${flowUP} 0.5s linear;
   display: flex;
   flex-direction: column;
@@ -45,7 +46,10 @@ const CurrentWeatherContainer = styled.div<ICurrentWeatherContainer>`
   border-radius: 1rem;
   margin: 0 1rem;
   padding: 1rem;
-  box-shadow: 0px 2px 4px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: ${(props) =>
+    props.enableShadow
+      ? "0px 2px 4px 4px rgba(0, 0, 0, 0.05)"
+      : "0 0 0 0 rgba(0,0,0,0)"};
   transition: all 0.5s linear;
   label {
     font-weight: 500;
@@ -55,8 +59,12 @@ const CurrentWeatherContainer = styled.div<ICurrentWeatherContainer>`
   }
 `;
 
-export const CurrentWeather = ({ locationKey, metric }: IProps) => {
-  const { darkTheme } = useStore();
+export const CurrentWeather = ({
+  locationKey,
+  metric,
+  enableShadow,
+}: IProps) => {
+  const darkTheme = useSelector((state: IUserStore) => state.darkTheme);
   const { handleNewToast } = useToast();
   const [isLoading, setIsLoading] = React.useState(false);
   const [currentWeather, setCurrentWeather] =
@@ -86,7 +94,7 @@ export const CurrentWeather = ({ locationKey, metric }: IProps) => {
   }, [locationKey]);
 
   return (
-    <CurrentWeatherContainer darkTheme={darkTheme}>
+    <CurrentWeatherContainer darkTheme={darkTheme} enableShadow={enableShadow}>
       {isLoading ? (
         <Loader />
       ) : (

@@ -1,8 +1,11 @@
 import React from "react";
-import { useStore } from "../stores/userStore";
+import { Dispatch } from "redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setFavorites } from "../store/actionCreators";
 
 export const useFavorites = () => {
-  const { favorites, setFavorites } = useStore();
+  const dispatch: Dispatch<any> = useDispatch();
+  const favorites = useSelector((state: IUserStore) => state.favorites);
   const changeFavoriteStatus = (locationKey: string) => {
     let tempFavorites: any[] = [...favorites];
     let favoriteIndex = tempFavorites.indexOf(locationKey);
@@ -11,7 +14,7 @@ export const useFavorites = () => {
     } else {
       tempFavorites = tempFavorites.filter((key) => key !== locationKey);
     }
-    setFavorites(tempFavorites);
+    dispatch(setFavorites(tempFavorites));
   };
 
   const checkKeyStatus = (locationKey: string) => {

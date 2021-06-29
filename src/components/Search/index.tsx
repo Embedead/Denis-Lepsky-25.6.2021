@@ -1,14 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { useStore } from "../../stores/userStore";
 import { useToast } from "../../hooks/useToast";
 import { theme, flowUP } from "../../theme";
-import { IDarkTheme } from "../misc/interfaces";
 import { MdSearch } from "react-icons/md";
-import { getSearchResults } from "../../api/constants";
+import { getSearchResults } from "../../api/basicAPI";
 import { SearchResults } from "./Results";
 import { useRef } from "react";
 import useOnClickOutside from "../../hooks/useOnClickOutside";
+import { useSelector } from "react-redux";
 
 const SearchContainer = styled.div<IDarkTheme>`
   position: relative;
@@ -48,7 +47,7 @@ const SearchContainer = styled.div<IDarkTheme>`
 `;
 
 export const Search = () => {
-  const { darkTheme } = useStore();
+  const darkTheme = useSelector((state: IUserStore) => state.darkTheme);
   const { addKnownToast } = useToast();
   const resultsRef = useRef(null);
   const [searchValue, setSearchValue] = React.useState("");

@@ -3,14 +3,12 @@ import styled from "styled-components";
 import { CurrentWeather } from "../components/currentWeather";
 import { DaysAheadForCast } from "../components/DaysAheadForcast";
 import { Search } from "../components/Search";
-import { useStore } from "../stores/userStore";
 import { useToast } from "../hooks/useToast";
 import { Loader } from "../components/misc/Loader";
-import { getLocationKeyByCord } from "../api/constants";
-
-interface IProps {
-  specificLocationKey?: string;
-}
+import { getLocationKeyByCord } from "../api/basicAPI";
+import { Dispatch } from "redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setLocationID } from "../store/actionCreators";
 
 const HomepageContainer = styled.div`
   display: flex;
@@ -22,8 +20,10 @@ const HomepageRow = styled.span`
   justify-content: center; ;
 `;
 
-export const Homepage = ({ specificLocationKey }: IProps) => {
-  const { locationID, setLocationID, metric } = useStore();
+export const Homepage = () => {
+  const dispatch: Dispatch<any> = useDispatch();
+  const locationID = useSelector((state: IUserStore) => state.locationID);
+  const metric = useSelector((state: IUserStore) => state.metric);
   const { handleNewToast } = useToast();
   const [isLoading, setIsLoading] = React.useState(true);
   const location = navigator.geolocation;
@@ -34,7 +34,7 @@ export const Homepage = ({ specificLocationKey }: IProps) => {
 
     getLocationKeyByCord(coordinates)
       .then((res) => {
-        setLocationID(res.data.Key);
+        dispatch(setLocationID(res.data.Key));
       })
       .catch((err) => {
         handleNewToast("couldn't find location name, network error");
@@ -43,7 +43,7 @@ export const Homepage = ({ specificLocationKey }: IProps) => {
 
   const findLocation = () => {
     const error = (err: any) => {
-      console.warn(`ERROR(${err.code}): ${err.message}`);
+      handleNewToast("couldn't aquire device location");
     };
 
     location.getCurrentPosition(handleAquiredLocation, error);
@@ -66,14 +66,12 @@ export const Homepage = ({ specificLocationKey }: IProps) => {
           </HomepageRow>
           <HomepageRow>
             <CurrentWeather
-              locationKey={specificLocationKey || locationID}
+              locationKey={locationID}
               metric={metric}
+              enableShadow={true}
             />
           </HomepageRow>
-          <DaysAheadForCast
-            locationKey={specificLocationKey || locationID}
-            metric={metric}
-          />
+          <DaysAheadForCast locationKey={locationID} metric={metric} />
         </HomepageContainer>
       )}
     </>

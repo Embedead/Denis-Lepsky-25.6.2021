@@ -1,10 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
-import { useStore } from "../../stores/userStore";
-import { IDarkTheme } from "../misc/interfaces";
 import { theme } from "../../theme";
 import { useFavorites } from "../../hooks/useFavorites";
+import { useSelector } from "react-redux";
 
 interface IProps {
   locationKey: string;
@@ -22,7 +21,7 @@ const FavoriteLabel = styled.label<IDarkTheme>`
 `;
 
 export const Favorite = ({ locationKey }: IProps) => {
-  const { darkTheme } = useStore();
+  const darkTheme = useSelector((state: IUserStore) => state.darkTheme);
   const { checkKeyStatus, changeFavoriteStatus } = useFavorites();
   return (
     <FavoriteLabel darkTheme={darkTheme}>

@@ -1,9 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { IDarkTheme } from "../misc/interfaces";
 import { theme, flowUP } from "../../theme";
-import { useStore } from "../../stores/userStore";
 import { CurrentWeather } from "../currentWeather/";
+import { useSelector } from "react-redux";
 
 const FavoritesContainer = styled.div<IDarkTheme>`
   animation: ${flowUP} 0.5s linear 250ms forwards;
@@ -39,10 +38,12 @@ const FavoriteTile = styled.span`
 `;
 
 export const Favorites = () => {
-  const { darkTheme, favorites, metric } = useStore();
+  const darkTheme = useSelector((state: IUserStore) => state.darkTheme);
+  const favorites = useSelector((state: IUserStore) => state.favorites);
+  const metric = useSelector((state: IUserStore) => state.metric);
 
   return (
-    <>
+    <React.Fragment key="Favorites Fragment">
       {favorites.length > 0 ? (
         <FavoritesContainer darkTheme={darkTheme}>
           {favorites.map((item, index) => {
@@ -52,6 +53,7 @@ export const Favorites = () => {
                   key={index}
                   locationKey={item}
                   metric={metric}
+                  enableShadow={false}
                 />
               </FavoriteTile>
             );
@@ -60,6 +62,6 @@ export const Favorites = () => {
       ) : (
         <></>
       )}
-    </>
+    </React.Fragment>
   );
 };

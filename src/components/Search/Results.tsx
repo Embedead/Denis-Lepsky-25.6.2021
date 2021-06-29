@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { IDarkTheme } from "../misc/interfaces";
 import { theme, flowUP } from "../../theme";
-import { useStore } from "../../stores/userStore";
+import { useSelector, useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import { setLocationID } from "../../store/actionCreators";
 
 interface IProps {
   results: any;
@@ -47,11 +48,13 @@ const Result = styled.span<IDarkTheme>`
 `;
 
 export const SearchResults = ({ results, setResults }: IProps) => {
+  const dispatch: Dispatch<any> = useDispatch();
   const handleResultClick = (key: string, setter: (data: any) => void) => {
-    setLocationID(key);
+    dispatch(setLocationID(key));
     setter([]);
   };
-  const { darkTheme, setLocationID, locationID } = useStore();
+  const darkTheme = useSelector((state: IUserStore) => state.darkTheme);
+
   return (
     <ResultsContainer darkTheme={darkTheme}>
       {results.map((item: any, index: number) => {

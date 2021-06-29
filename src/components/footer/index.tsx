@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useStore } from "../../stores/userStore";
-import { IDarkTheme } from "../misc/interfaces";
+import { useSelector } from "react-redux";
 const FooterContainer = styled.div<IDarkTheme>`
   display: flex;
   flex-direction: column;
@@ -18,7 +17,7 @@ const FooterContainer = styled.div<IDarkTheme>`
 `;
 
 export const WeatherFooter = () => {
-  const { darkTheme } = useStore();
+  const darkTheme = useSelector((state: IUserStore) => state.darkTheme);
   return (
     <FooterContainer darkTheme={darkTheme}>
       <label>Developed by Denis Lepsky</label>

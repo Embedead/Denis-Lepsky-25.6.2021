@@ -1,9 +1,11 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { getLocationNameByKey } from "../../api/constants";
+import { getLocationNameByKey } from "../../api/basicAPI";
 import { useToast } from "../../hooks/useToast";
-import { useStore } from "../../stores/userStore";
+import { Dispatch } from "redux";
+import { useDispatch } from "react-redux";
+import { setLocationID } from "../../store/actionCreators";
 import { theme } from "../../theme";
 
 interface IProps {
@@ -22,8 +24,8 @@ const LocationContainer = styled.div`
 `;
 
 export const LocationTitle = ({ locationKey }: IProps) => {
+  const dispatch: Dispatch<any> = useDispatch();
   const history = useHistory();
-  const { setLocationID } = useStore();
   const { handleNewToast } = useToast();
   const [location, setLocation] = React.useState("");
 
@@ -39,7 +41,7 @@ export const LocationTitle = ({ locationKey }: IProps) => {
   }, [locationKey]);
 
   const handleTileClick = (locationKey: string) => {
-    setLocationID(locationKey);
+    dispatch(setLocationID(locationKey));
     history.push("/");
   };
   return (
