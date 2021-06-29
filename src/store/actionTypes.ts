@@ -1,0 +1,4 @@
+export const SET_LOCATIONID = "SET_LOCATIONID";
+export const SET_FAVORITES = "SET_FAVORITES";
+export const SET_METRIC = "SET_METRIC";
+export const SET_DARKTHEME = "SET_DARKTHEME";
